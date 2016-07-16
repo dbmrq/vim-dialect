@@ -16,7 +16,8 @@ au BufNewFile,BufRead * call SetSpellFile()
 
 function! SetSpellFile()
     if !exists('g:dialectfile')
-        let g:dialectfile = expand('%:p:h') . '/.dialect.utf-8.add'
+        let g:dialectfile = expand('%:p:h') .
+                                \ '/.dialect.' . &l:fileencoding . '.add'
     endif
     if &l:spellfile == ""
         let &l:spellfile = g:dialectfile
