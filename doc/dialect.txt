@@ -1,0 +1,38 @@
+*dialect.txt* Project specific spellfiles
+
+Author: Daniel B. Marques
+License: Same as Vim (see |license|)
+
+
+==============================================================================
+
+Dialect is a simple plugin that persists the words added with zG and zW to
+a spellfile specific to the current directory.
+
+
+Usage                                                          *dialect-usage*
+-----
+
+    - Install Dialect using your favorite plugin manager or copy dialect.vim
+      to "~/.vim/plugin".
+
+    - Keep using zg and zw the way you always did.
+
+    - The words you add with zG and zW will be added to |g:dialectfile|.
+
+
+g:dialectfile                                                  *g:dialectfile*
+-------------
+
+This is the file where dialect saves words added with zG and zW.
+
+The default value is: >
+
+    .dialect.{encoding}.add
+>
+(As with 'spellfile', if you don't specify a path, the current directory is
+used.)
+
+
+ vim:tw=78:ts=8:ft=help:norl:
+

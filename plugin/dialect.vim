@@ -1,7 +1,7 @@
 " dialect.vim - Project specific spellfiles
 " Author:   Daniel B. Marques
 " Version:  0.1
-" License:  Same as ViM
+" License:  Same as Vim
 
 
 if exists("g:loaded_dialect")
@@ -16,8 +16,8 @@ au BufNewFile,BufRead * call s:setSpellFile()
 
 function! s:setSpellFile()
     if !exists('g:dialectfile')
-        let g:dialectfile = expand('%:p:h') .
-                                \ '/.dialect.' . &l:fileencoding . '.add'
+        let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
+        let g:dialectfile = expand('%:p:h') . '/.dialect.' . encoding . '.add'
     else
         let g:dialectfile = expand(g:dialectfile)
     endif
@@ -29,22 +29,22 @@ function! s:setSpellFile()
     let s:dialectcount = index(split(&l:spellfile, ","), g:dialectfile) + 1
 endfunction
 
-nnoremap <silent> zG :call s:localSpell("zG")<CR>
-nnoremap <silent> zW :call s:localSpell("zW")<CR>
-nnoremap <silent> zuG :call s:localSpell("zuG")<CR>
-nnoremap <silent> zuW :call s:localSpell("zuW")<CR>
-vnoremap <silent> zG :call s:localSpellV("zG")<CR>
-vnoremap <silent> zW :call s:localSpellV("zW")<CR>
-vnoremap <silent> zuG :call s:localSpellV("zuG")<CR>
-vnoremap <silent> zuW :call s:localSpellV("zuW")<CR>
-nnoremap <silent> zg :<C-U>call s:globalSpell(v:count . "zg")<CR>
-nnoremap <silent> zw :<C-U>call s:globalSpell(v:count . "zw")<CR>
-nnoremap <silent> zug :<C-U>call s:globalSpell(v:count . "zug")<CR>
-nnoremap <silent> zuw :<C-U>call s:globalSpell(v:count . "zuw")<CR>
-vnoremap <silent> zg :<C-U>call s:globalSpell("gv" . v:count . "zg")<CR>
-vnoremap <silent> zw :<C-U>call s:globalSpell("gv" . v:count . "zw")<CR>
-vnoremap <silent> zug :<C-U>call s:globalSpell("gv" . v:count . "zug")<CR>
-vnoremap <silent> zuw :<C-U>call s:globalSpell("gv" . v:count . "zuw")<CR>
+nnoremap <silent> zG :call <SID>localSpell("zG")<CR>
+nnoremap <silent> zW :call <SID>localSpell("zW")<CR>
+nnoremap <silent> zuG :call <SID>localSpell("zuG")<CR>
+nnoremap <silent> zuW :call <SID>localSpell("zuW")<CR>
+vnoremap <silent> zG :call <SID>localSpellV("zG")<CR>
+vnoremap <silent> zW :call <SID>localSpellV("zW")<CR>
+vnoremap <silent> zuG :call <SID>localSpellV("zuG")<CR>
+vnoremap <silent> zuW :call <SID>localSpellV("zuW")<CR>
+nnoremap <silent> zg :<C-U>call <SID>globalSpell(v:count . "zg")<CR>
+nnoremap <silent> zw :<C-U>call <SID>globalSpell(v:count . "zw")<CR>
+nnoremap <silent> zug :<C-U>call <SID>globalSpell(v:count . "zug")<CR>
+nnoremap <silent> zuw :<C-U>call <SID>globalSpell(v:count . "zuw")<CR>
+vnoremap <silent> zg :<C-U>call <SID>globalSpell("gv" . v:count . "zg")<CR>
+vnoremap <silent> zw :<C-U>call <SID>globalSpell("gv" . v:count . "zw")<CR>
+vnoremap <silent> zug :<C-U>call <SID>globalSpell("gv" . v:count . "zug")<CR>
+vnoremap <silent> zuw :<C-U>call <SID>globalSpell("gv" . v:count . "zuw")<CR>
 
 function! s:localSpell(cmd)
     call s:setSpellFile()
