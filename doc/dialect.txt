@@ -13,25 +13,17 @@ a spellfile specific to the current directory.
 Usage                                                          *dialect-usage*
 -----
 
-    - Install Dialect using your favorite plugin manager or copy dialect.vim
-      to "~/.vim/plugin".
-
     - Keep using zg and zw the way you always did.
 
-    - The words you add with zG and zW will be added to |g:dialectfile|.
+    - The words you add with zG and zW will be added to
+      "./.dialect.{encoding}.add".
 
-
-g:dialectfile                                                  *g:dialectfile*
--------------
-
-This is the file where dialect saves words added with zG and zW.
-
-The default value is: >
-
-    .dialect.{encoding}.add
+    - By default, dialect.vim uses a 'spellfile' for each directory. If you
+      want a different 'spellfile' for each specific file, add this to your
+      .vimrc:
 >
-(As with 'spellfile', if you don't specify a path, the current directory is
-used.)
+        let g:dialectmode = 'file'
+<
 
 
  vim:tw=78:ts=8:ft=help:norl:

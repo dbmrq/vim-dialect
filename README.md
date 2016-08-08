@@ -1,6 +1,7 @@
 # dialect.vim
 
-A simple plugin that persists the words added with `zG` and `zW` to a `spellfile` specific to the current directory.
+A simple plugin that persists the words added with `zG` and `zW` to a
+`spellfile` specific to the current file or directory.
 
 
 ## Usage
@@ -10,8 +11,9 @@ A simple plugin that persists the words added with `zG` and `zW` to a `spellfile
 - The words you add with `zG` and `zW` will be added to
 `./.dialect.{encoding}.add`.
 
-- You can change the default file with `let g:dialectfile
-= "yourfile.utf-8.add"`.
+- By default, `dialect.vim` uses a `spellfile` for each directory. If you want
+  a different `spellfile` for each specific file, add this to your `.vimrc`:
+  `let g:dialectmode = 'file'`.
 
 That's it!
 
