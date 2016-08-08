@@ -15,18 +15,19 @@ set cpo&vim
 au BufNewFile,BufRead * call s:setSpellFile()
 
 function! s:setSpellFile()
-    if !exists('g:dialectfile')
-        let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
-        let g:dialectfile = expand('%:p:h') . '/.dialect.' . encoding . '.add'
+    let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
+    if exists('g:dialectmode') && tolower(g:dialectmode) == 'file'
+        let b:dialectfile =
+            \ expand('%:p:h') . '/.' . expand('%:t') . '.' . encoding . '.add'
     else
-        let g:dialectfile = expand(g:dialectfile)
+        let b:dialectfile = expand('%:p:h') . '/.dialect.' . encoding . '.add'
     endif
     if &l:spellfile == ""
-        let &l:spellfile = g:dialectfile
-    elseif !(&l:spellfile =~ g:dialectfile)
-        let &l:spellfile .= "," . g:dialectfile
+        let &l:spellfile = b:dialectfile
+    elseif !(&l:spellfile =~ b:dialectfile)
+        let &l:spellfile .= "," . b:dialectfile
     endif
-    let s:dialectcount = index(split(&l:spellfile, ","), g:dialectfile) + 1
+    let b:dialectcount = index(split(&l:spellfile, ","), b:dialectfile) + 1
 endfunction
 
 nnoremap <silent> zG :call <SID>localSpell("zG")<CR>
@@ -48,23 +49,23 @@ vnoremap <silent> zuw :<C-U>call <SID>globalSpell("gv" . v:count . "zuw")<CR>
 
 function! s:localSpell(cmd)
     call s:setSpellFile()
-    execute "normal! " . s:dialectcount . tolower(a:cmd)
+    execute "normal! " . b:dialectcount . tolower(a:cmd)
 endfunction
 
 function! s:localSpellV(cmd)
     call s:setSpellFile()
-    execute "normal! gv" . s:dialectcount . tolower(a:cmd)
+    execute "normal! gv" . b:dialectcount . tolower(a:cmd)
 endfunction
 
 function! s:globalSpell(cmd)
     call s:setSpellFile()
-    if s:dialectcount > 1 || matchstr(a:cmd, '\d') >= 1
+    if b:dialectcount > 1 || matchstr(a:cmd, '\d') >= 1
         execute "normal! " . a:cmd
     else
-        let b:spellfile = &l:spellfile
+        let l:spellfile = &l:spellfile
         setlocal spellfile=
         execute "normal! " . substitute(a:cmd, '0', '', '')
-        let &l:spellfile = b:spellfile
+        let &l:spellfile = l:spellfile
     endif
 endfunction
 
