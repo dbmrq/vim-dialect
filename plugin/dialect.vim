@@ -60,7 +60,7 @@ endfunction
 function! s:globalSpell(cmd)
     call s:setSpellFile()
     if b:dialectcount > 1 || matchstr(a:cmd, '\d') >= 1
-        execute "normal! " . a:cmd
+        execute "normal! " . substitute(a:cmd, '0', '', '')
     else
         let l:spellfile = &l:spellfile
         setlocal spellfile=
