@@ -12,14 +12,15 @@ let g:loaded_dialect = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-au BufNewFile,BufRead * call s:setSpellFile()
+call s:setSpellFile()
 
 function! s:setSpellFile()
     let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
     if exists('g:dialectmode') && tolower(g:dialectmode) == 'file'
-        let b:dialectfile = '.' . expand('%:t') . '.' . encoding . '.add'
+        let b:dialectfile =
+            \ expand('%:p:h') . '/.' . expand('%:t') . '.' . encoding . '.add'
     else
-        let b:dialectfile = '.dialect.' . encoding . '.add'
+        let b:dialectfile = expand('%:p:h') . '/.dialect.' . encoding . '.add'
     endif
     if &l:spellfile == ""
         let &l:spellfile = b:dialectfile
