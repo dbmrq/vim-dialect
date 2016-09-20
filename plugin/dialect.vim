@@ -12,19 +12,19 @@ let g:loaded_dialect = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-call s:setSpellFile()
+au BufNewFile,BufRead * call s:setSpellFile()
 
 function! s:setSpellFile()
     let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
     if exists('g:dialectmode') && tolower(g:dialectmode) == 'file'
-        let b:dialectfile =
-            \ expand('%:p:h') . '/.' . expand('%:t') . '.' . encoding . '.add'
+        let tail = '/.' . expand('%:t') . '.' . encoding . '.add'
     else
-        let b:dialectfile = expand('%:p:h') . '/.dialect.' . encoding . '.add'
+        let tail = '/.dialect.' . encoding . '.add'
     endif
+    let b:dialectfile = expand('%:p:h') . tail
     if &l:spellfile == ""
         let &l:spellfile = b:dialectfile
-    elseif !(&l:spellfile =~ b:dialectfile)
+    elseif !(&l:spellfile =~ tail)
         let &l:spellfile .= "," . b:dialectfile
     endif
     let b:dialectcount = index(split(&l:spellfile, ","), b:dialectfile) + 1
@@ -49,12 +49,14 @@ vnoremap <silent> zuw :<C-U>call <SID>globalSpell("gv" . v:count . "zuw")<CR>
 
 function! s:localSpell(cmd)
     call s:setSpellFile()
-    execute "normal! " . b:dialectcount . tolower(a:cmd)
+    let l:count = b:dialectcount > 0 ? b:dialectcount : ''
+    execute "normal! " . l:count . tolower(a:cmd)
 endfunction
 
 function! s:localSpellV(cmd)
     call s:setSpellFile()
-    execute "normal! gv" . b:dialectcount . tolower(a:cmd)
+    let l:count = b:dialectcount > 0 ? b:dialectcount : ''
+    execute "normal! gv" . l:count . tolower(a:cmd)
 endfunction
 
 function! s:globalSpell(cmd)
