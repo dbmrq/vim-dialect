@@ -17,3 +17,12 @@ A simple plugin that persists the words added with `zG` and `zW` to a
 
 That's it!
 
+
+## See also
+
+You may also be interested in my other plugins:
+
+- [Ditto: highlight overused words](https://github.com/dbmrq/vim-ditto) :speak_no_evil:
+- [Chalk: better fold markers](https://github.com/dbmrq/vim-chalk) :pencil2:
+
+
