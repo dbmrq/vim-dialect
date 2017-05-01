@@ -25,6 +25,8 @@ Usage                                                          *dialect-usage*
         let g:dialectmode = 'file'
 <
 
+      You can also add a file called ".dialectmain" to a directory and all
+      files in its subdirectories will use the 'spellfile' there.
 
  vim:tw=78:ts=8:ft=help:norl:
 

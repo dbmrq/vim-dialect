@@ -14,14 +14,31 @@ set cpo&vim
 
 au BufNewFile,BufRead * call s:setSpellFile()
 
+function! s:getMainDir()
+    let l:path = expand('%:p:h')
+    while l:path != fnamemodify(l:path, ':h')
+        if !empty(glob(l:path . '/.dialectmain'))
+            return l:path
+        endif
+        let l:path = fnamemodify(l:path, ':h')
+    endwhile
+    return ''
+endfunction
+
 function! s:setSpellFile()
     let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
     if exists('g:dialectmode') && tolower(g:dialectmode) == 'file'
-        let tail = '/.' . expand('%:t') . '.' . encoding . '.add'
+        let b:dialectfile = expand('%:p:h') .
+                    \ '/.' . expand('%:t') . '.' . encoding . '.add'
     else
-        let tail = '/.dialect.' . encoding . '.add'
+        let mainDir = s:getMainDir()
+        if mainDir != ''
+            let b:dialectfile = mainDir . '/.dialect.' . encoding . '.add'
+        else
+            let b:dialectfile = expand('%:p:h') .
+                        \ '/.dialect.' . encoding . '.add'
+        endif
     endif
-    let b:dialectfile = expand('%:p:h') . tail
     if &l:spellfile == ""
         let &l:spellfile = b:dialectfile
     elseif !(&l:spellfile =~ tail)

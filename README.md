@@ -13,7 +13,9 @@ A simple plugin that persists the words added with `zG` and `zW` to a
 
 - By default, `dialect.vim` uses a `spellfile` for each directory. If you want
   a different `spellfile` for each specific file, add this to your `.vimrc`:
-  `let g:dialectmode = 'file'`.
+  `let g:dialectmode = 'file'`. You can also add a file called `.dialectmain`
+  to a directory and all files in its subdirectories will use the `spellfile`
+  there.
 
 That's it!
 
