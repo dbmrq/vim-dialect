@@ -28,15 +28,15 @@ endfunction
 function! s:setSpellFile()
     let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
     if exists('g:dialectmode') && tolower(g:dialectmode) == 'file'
-        let b:dialectfile = expand('%:p:h') .
-                    \ '/.' . expand('%:t') . '.' . encoding . '.add'
+        let tail = '/.' . expand('%:t') . '.' . encoding . '.add'
+        let b:dialectfile = expand('%:p:h') . tail
     else
+        let tail = '/.dialect.' . encoding . '.add'
         let mainDir = s:getMainDir()
         if mainDir != ''
-            let b:dialectfile = mainDir . '/.dialect.' . encoding . '.add'
+            let b:dialectfile = mainDir . tail
         else
-            let b:dialectfile = expand('%:p:h') .
-                        \ '/.dialect.' . encoding . '.add'
+            let b:dialectfile = expand('%:p:h') . tail
         endif
     endif
     if &l:spellfile == ""
