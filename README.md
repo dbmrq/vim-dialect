@@ -25,6 +25,7 @@ That's it!
 You may also be interested in my other plugins:
 
 - [Ditto: highlight overused words](https://github.com/dbmrq/vim-ditto) :speak_no_evil:
+- [Howdy: a tiny MRU start screen for Vim](https://github.com/dbmrq/vim-howdy) :wave:
 - [Chalk: better fold markers](https://github.com/dbmrq/vim-chalk) :pencil2:
 
 
