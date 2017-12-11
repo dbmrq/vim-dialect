@@ -1,43 +1,25 @@
 " dialect.vim - Project specific spellfiles
 " Author:   Daniel B. Marques
-" Version:  0.1
+" Version:  0.2
 " License:  Same as Vim
 
 
-if exists("g:loaded_dialect")
-    finish
-endif
+if exists("g:loaded_dialect") | finish | endif
 let g:loaded_dialect = 1
 
-let s:save_cpo = &cpo
-set cpo&vim
+augroup Dialect
+    au!
+    au BufNewFile,BufRead * call DialectInit()
+augroup END
 
-au BufNewFile,BufRead * call s:setSpellFile()
-
-function! s:getMainDir()
-    let l:path = expand('%:p:h')
-    while l:path != fnamemodify(l:path, ':h')
-        if !empty(glob(l:path . '/.dialectmain'))
-            return l:path
-        endif
-        let l:path = fnamemodify(l:path, ':h')
-    endwhile
-    return ''
-endfunction
-
-function! s:setSpellFile()
+function! DialectInit()
     let encoding = &l:fileencoding == '' ? &l:encoding : &l:fileencoding
     if exists('g:dialectmode') && tolower(g:dialectmode) == 'file'
         let tail = '/.' . expand('%:t') . '.' . encoding . '.add'
         let b:dialectfile = expand('%:p:h') . tail
     else
         let tail = '/.dialect.' . encoding . '.add'
-        let mainDir = s:getMainDir()
-        if mainDir != ''
-            let b:dialectfile = mainDir . tail
-        else
-            let b:dialectfile = expand('%:p:h') . tail
-        endif
+        let b:dialectfile = dialect#getMainDir() . tail
     endif
     if &l:spellfile == ""
         let &l:spellfile = b:dialectfile
@@ -47,48 +29,20 @@ function! s:setSpellFile()
     let b:dialectcount = index(split(&l:spellfile, ","), b:dialectfile) + 1
 endfunction
 
-nnoremap <silent> zG :call <SID>localSpell("zG")<CR>
-nnoremap <silent> zW :call <SID>localSpell("zW")<CR>
-nnoremap <silent> zuG :call <SID>localSpell("zuG")<CR>
-nnoremap <silent> zuW :call <SID>localSpell("zuW")<CR>
-vnoremap <silent> zG :call <SID>localSpellV("zG")<CR>
-vnoremap <silent> zW :call <SID>localSpellV("zW")<CR>
-vnoremap <silent> zuG :call <SID>localSpellV("zuG")<CR>
-vnoremap <silent> zuW :call <SID>localSpellV("zuW")<CR>
-nnoremap <silent> zg :<C-U>call <SID>globalSpell(v:count . "zg")<CR>
-nnoremap <silent> zw :<C-U>call <SID>globalSpell(v:count . "zw")<CR>
-nnoremap <silent> zug :<C-U>call <SID>globalSpell(v:count . "zug")<CR>
-nnoremap <silent> zuw :<C-U>call <SID>globalSpell(v:count . "zuw")<CR>
-vnoremap <silent> zg :<C-U>call <SID>globalSpell("gv" . v:count . "zg")<CR>
-vnoremap <silent> zw :<C-U>call <SID>globalSpell("gv" . v:count . "zw")<CR>
-vnoremap <silent> zug :<C-U>call <SID>globalSpell("gv" . v:count . "zug")<CR>
-vnoremap <silent> zuw :<C-U>call <SID>globalSpell("gv" . v:count . "zuw")<CR>
-
-function! s:localSpell(cmd)
-    call s:setSpellFile()
-    let l:count = b:dialectcount > 0 ? b:dialectcount : ''
-    execute "normal! " . l:count . tolower(a:cmd)
-endfunction
-
-function! s:localSpellV(cmd)
-    call s:setSpellFile()
-    let l:count = b:dialectcount > 0 ? b:dialectcount : ''
-    execute "normal! gv" . l:count . tolower(a:cmd)
-endfunction
-
-function! s:globalSpell(cmd)
-    call s:setSpellFile()
-    if b:dialectcount > 1 || matchstr(a:cmd, '\d') >= 1
-        execute "normal! " . substitute(a:cmd, '0', '', '')
-    else
-        let l:spellfile = &l:spellfile
-        setlocal spellfile=
-        execute "normal! " . substitute(a:cmd, '0', '', '')
-        let &l:spellfile = l:spellfile
-    endif
-endfunction
-
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
+nnoremap <silent> zG :call dialect#localSpell("zG")<CR>
+nnoremap <silent> zW :call dialect#localSpell("zW")<CR>
+nnoremap <silent> zuG :call dialect#localSpell("zuG")<CR>
+nnoremap <silent> zuW :call dialect#localSpell("zuW")<CR>
+vnoremap <silent> zG :call dialect#localSpellV("zG")<CR>
+vnoremap <silent> zW :call dialect#localSpellV("zW")<CR>
+vnoremap <silent> zuG :call dialect#localSpellV("zuG")<CR>
+vnoremap <silent> zuW :call dialect#localSpellV("zuW")<CR>
+nnoremap <silent> zg :<C-U>call dialect#globalSpell(v:count . "zg")<CR>
+nnoremap <silent> zw :<C-U>call dialect#globalSpell(v:count . "zw")<CR>
+nnoremap <silent> zug :<C-U>call dialect#globalSpell(v:count . "zug")<CR>
+nnoremap <silent> zuw :<C-U>call dialect#globalSpell(v:count . "zuw")<CR>
+vnoremap <silent> zg :<C-U>call dialect#globalSpell("gv" . v:count . "zg")<CR>
+vnoremap <silent> zw :<C-U>call dialect#globalSpell("gv" . v:count . "zw")<CR>
+vnoremap <silent> zug :<C-U>call dialect#globalSpell("gv" . v:count . "zug")<CR>
+vnoremap <silent> zuw :<C-U>call dialect#globalSpell("gv" . v:count . "zuw")<CR>
 
