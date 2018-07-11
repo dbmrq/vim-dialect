@@ -21,6 +21,7 @@ function! DialectInit()
         let tail = '/.dialect.' . encoding . '.add'
         let b:dialectfile = dialect#getMainDir() . tail
     endif
+    let b:dialectfile = escape(b:dialectfile, ',')
     if &l:spellfile == ""
         let &l:spellfile = b:dialectfile
     elseif !(&l:spellfile =~ tail)
